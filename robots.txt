@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://shanepark.github.io/sitemap.xml
