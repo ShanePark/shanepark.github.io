@@ -1,0 +1,52 @@
+---
+import '../styles/doc.css';
+
+// Bilingual policy pages: the English and Korean sections both stay on the page.
+interface Props {
+  app: { name: string; home: string; icon: string; touchIcon: string };
+  page: string;
+  title: string;
+  description: string;
+  pages: { file: string; en: string; ko: string }[];
+  body: string;
+}
+const { app, page, title, description, pages, body } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="referrer" content="no-referrer">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="icon" type="image/png" href={app.icon}>
+<link rel="apple-touch-icon" href={app.touchIcon}>
+</head>
+<body>
+<div class="page">
+<nav class="site-nav" aria-label="Site">
+  <a class="brand" href={app.home}>{app.name}</a>
+  {pages.map(p => <a href={p.file} aria-current={p.file === page ? 'page' : undefined}>{p.en}</a>)}
+</nav>
+<p class="lang-switch"><a href="#en" hreflang="en">English</a><a href="#ko" hreflang="ko" lang="ko">한국어</a></p>
+
+<Fragment set:html={body} />
+
+<footer class="doc-footer">
+  {pages.filter(p => p.file !== page).map((p, i) => <>{i > 0 && ' · '}<a href={p.file}>{p.en} · <span lang="ko">{p.ko}</span></a></>)}
+</footer>
+</div>
+<script is:inline>
+  // Build the address on click so it never appears in the page source.
+  document.querySelectorAll('[data-contact]').forEach(button => {
+    button.addEventListener('click', () => {
+      const address = String.fromCharCode(115, 104, 97, 110, 101, 112, 97, 114, 107, 46, 100, 101, 118, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109);
+      window.location.href = 'mail' + 'to:' + address;
+    });
+    button.disabled = false;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="달빛랜드 고객지원 · dalbitLand support. iPhone과 iPad를 위한 오프라인 유아 놀이 도움말 · Help with offline toddler games for iPhone and iPad.">
+  <title>dalbitLand Support · 달빛랜드 고객지원</title>
+  <script>
+    (() => {
+      const requested = new URLSearchParams(location.search).get('lang');
+      const preferenceKey = 'dalbitland-support-language';
+      let saved;
+      try { saved = localStorage.getItem(preferenceKey); } catch {}
+      const explicit = requested === 'ko' || requested === 'en';
+      const language = explicit ? requested : (saved === 'ko' || saved === 'en')
+        ? saved : ((navigator.language || 'en').toLowerCase().startsWith('ko') ? 'ko' : 'en');
+      if (explicit) {
+        try { localStorage.setItem(preferenceKey, language); } catch {}
+      }
+      document.documentElement.lang = language;
+      document.documentElement.dataset.language = language;
+      document.title = language === 'ko' ? '달빛랜드 고객지원 · dalbitLand' : 'dalbitLand Support';
+    })();
+  </script>
+  <style>
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #302d45; background: #faf8f3; font-synthesis: none; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.7; -webkit-text-size-adjust: 100%; }
+    a { color: #51418b; text-underline-offset: .22em; }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #7257a7; outline-offset: 5px; border-radius: 8px; }
+    .shell { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+    .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-block: 27px; border-bottom: 1px solid #e7e2da; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 800; letter-spacing: -.05em; }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; background: #e9e2f3; border-radius: 14px; color: #695091; font-size: 1.5rem; }
+    .language { display: flex; flex-shrink: 0; gap: 3px; padding: 4px; background: #eee9e2; border-radius: 100px; }
+    .language a { white-space: nowrap; min-height: 42px; display: grid; place-items: center; padding: 6px 17px; border-radius: 100px; text-decoration: none; font-size: .875rem; font-weight: 650; color: #645c70; }
+    .language a[aria-current="true"] { background: white; color: #443366; box-shadow: 0 2px 6px #302d4510; }
+    article { scroll-margin-top: 120px; }
+    .hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: center; padding-block: 72px 64px; }
+    .eyebrow { color: #715888; font-size: .78rem; font-weight: 750; letter-spacing: .14em; margin: 0 0 22px; }
+    h1, h2, h3 { margin: 0; line-height: 1.25; letter-spacing: -.045em; }
+    h1 { font-size: clamp(2.35rem, 4.1vw, 3.7rem); font-weight: 780; }
+    .intro { color: #6d6679; margin: 24px 0; font-size: 1.05rem; line-height: 1.85; word-break: keep-all; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .chips span { font-size: .75rem; color: #5e576c; border: 1px solid #e1dcd4; padding: 5px 11px; border-radius: 100px; background: #fffdf8; }
+    .contact { position: relative; padding: 35px; border-radius: 28px; background: #eee8f6; overflow: hidden; }
+    .moon { display: block; width: 64px; height: 64px; border-radius: 50%; background: #f9d99d; box-shadow: inset -18px 6px 0 #eee8f6; margin-bottom: 28px; transform: rotate(-12deg); }
+    .sparkle { position: absolute; right: 32px; top: 33px; color: #a493be; font-size: 1.5rem; }
+    .contact h2 { font-size: 1.6rem; }
+    .contact p { color: #62576f; font-size: .94rem; }
+    .button { width: 100%; border: 0; font: inherit; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 54px; background: #574078; color: white; border-radius: 13px; padding: 13px 19px; margin-top: 25px; text-decoration: none; font-weight: 650; }
+    .button:hover:not(:disabled) { background: #463163; }
+    .button:disabled { opacity: .65; cursor: default; }
+    .contact .note { font-size: .75rem; line-height: 1.6; margin: 12px 0 0; }
+    .help { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 64px; padding-block: 16px 64px; align-items: start; }
+    .section-title { font-size: 1.65rem; }
+    .section-intro { margin: 12px 0 27px; color: #756d7d; font-size: .94rem; }
+    details { border-top: 1px solid #e2ddd6; }
+    details:last-child { border-bottom: 1px solid #e2ddd6; }
+    summary { min-height: 70px; padding: 22px 34px 22px 0; font-weight: 650; line-height: 1.65; cursor: pointer; position: relative; list-style: none; word-break: keep-all; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; position: absolute; right: 4px; top: 18px; color: #8d779f; font-size: 1.4rem; font-weight: 400; }
+    details[open] summary::after { content: "−"; }
+    .answer { color: #6b6374; padding: 0 22px 21px 0; font-size: .94rem; }
+    .answer p { margin: 0 0 12px; }
+    .answer p:last-child { margin-bottom: 0; }
+    strong { font-weight: 650; color: #4d435d; }
+    .prepare { padding: 29px; background: #fffdfa; border: 1px solid #e7e1d8; border-radius: 22px; }
+    .prepare h2 { font-size: 1.25rem; }
+    .prepare p { font-size: .9rem; color: #756b79; }
+    .prepare ul { padding: 0; margin: 22px 0 27px; list-style: none; }
+    .prepare li { display: flex; gap: 11px; margin-block: 12px; font-size: .88rem; color: #514a5c; }
+    .prepare li::before { content: "✓"; color: #708c7c; font-weight: 750; }
+    .privacy-note { border-top: 1px solid #e8e2da; padding-top: 23px; }
+    .privacy-note h3 { color: #776341; font-size: .92rem; line-height: 1.6; letter-spacing: -.02em; }
+    .privacy-note p { font-size: .81rem; line-height: 1.8; }
+    .site-footer { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-block: 27px 35px; border-top: 1px solid #e7e2da; color: #756b7b; font-size: .79rem; }
+    .site-footer p { margin: 0; }
+    html[data-language="ko"] [data-content-language="en"], html[data-language="en"] [data-content-language="ko"] { display: none; }
+    @media (max-width: 800px) { .hero, .help { gap: 32px; } .contact { padding: 28px; } .hero { padding-block: 48px; } .help { grid-template-columns: minmax(0, 1fr); } .prepare { margin-top: 4px; } }
+    @media (max-width: 600px) { .shell { width: calc(100% - 40px); } .site-header { padding-block: 20px; gap: 12px; } .brand { font-size: 1.15rem; gap: 7px; } .brand-mark { width: 32px; height: 32px; border-radius: 11px; font-size: 1.25rem; } .language a { padding-inline: 12px; font-size: .78rem; } .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 42px; } .eyebrow { margin-bottom: 18px; } .intro { font-size: .97rem; } .contact { padding: 26px; border-radius: 23px; } .moon { width: 47px; height: 47px; margin-bottom: 18px; box-shadow: inset -14px 4px 0 #eee8f6; } .contact h2 { font-size: 1.4rem; } .section-title { font-size: 1.5rem; } .help { padding-bottom: 42px; } .prepare { padding: 25px; } }
+    @media print { .language { display: none; } details::details-content { content-visibility: visible; } .hero, .help { display: block; } .contact, .prepare { margin-block: 24px; } }
+  </style>
+</head>
+<body>
+  <header class="site-header shell">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">☾</span>dalbitLand</div>
+    <nav class="language" aria-label="언어 선택 · Choose language">
+      <a href="?lang=ko#support-ko" lang="ko" hreflang="ko" data-language-link="ko">한국어</a>
+      <a href="?lang=en#support-en" lang="en" hreflang="en" data-language-link="en">English</a>
+    </nav>
+  </header>
+  <main class="shell">
+    <article id="support-ko" lang="ko" data-content-language="ko" aria-labelledby="title-ko">
+      <section class="hero" aria-labelledby="title-ko">
+        <div>
+          <p class="eyebrow">달빛랜드 고객지원</p>
+          <h1 id="title-ko">작은 궁금증도,<br>편하게 물어보세요.</h1>
+          <p class="intro">아이의 놀이 시간이 즐겁게 이어지도록.<br>달빛랜드 이용 방법과 도움이 필요할 때의 연락처를 모았어요.</p>
+          <div class="chips"><span>인터넷 없이 놀이</span><span>광고·앱 내 구매 없음</span><span>iPhone · iPad</span></div>
+        </div>
+        <aside class="contact" aria-labelledby="contact-ko">
+          <span class="moon" aria-hidden="true"></span><span class="sparkle" aria-hidden="true">✧ ·</span>
+          <h2 id="contact-ko">도움이 필요하신가요?</h2>
+          <p>앱 이용 중 불편한 점이나 의견, 개인정보 관련 질문을 이메일로 보내 주세요.</p>
+          <button class="button" type="button" data-contact disabled>이메일로 문의하기<span aria-hidden="true">↗</span></button>
+          <noscript><p class="note">이메일 문의를 사용하려면 브라우저에서 JavaScript를 켜고 메일 앱을 설정해 주세요.</p></noscript>
+          <p class="note">메일 앱이 열려요. 직접 보내기 전에는 문의가 전송되지 않아요.</p>
+        </aside>
+      </section>
+      <div class="help">
+        <section aria-labelledby="faq-ko">
+          <h2 class="section-title" id="faq-ko">자주 묻는 질문</h2>
+          <p class="section-intro">놀이를 시작하기 전에, 궁금한 내용을 확인해 보세요.</p>
+          <details><summary>어떤 기기에서 사용할 수 있나요?</summary><div class="answer"><p>달빛랜드는 유아를 위한 오프라인 놀이 모음입니다. iOS 또는 iPadOS 18 이상이 필요해요. iPhone에서는 세로 화면으로, iPad에서는 세로와 가로 화면으로 즐길 수 있어요.</p><p>앱 화면은 기기의 기본 언어에 따라 한국어 또는 영어로 표시됩니다.</p></div></details>
+          <details><summary>게임을 시작하거나 다른 게임으로 이동하려면요?</summary><div class="answer"><p>게임 카드를 좌우로 넘긴 뒤 가운데 카드를 누르면 시작해요. 게임 중에는 왼쪽 위의 홈 버튼을 눌러 게임 목록으로 돌아갈 수 있어요.</p><p>게임 목록 오른쪽 위의 <strong>ⓘ 정보 버튼</strong>을 누르면 인터넷 연결 없이도 개인정보와 고객지원 안내를 볼 수 있어요.</p></div></details>
+          <details><summary>소리가 들리지 않아요. 어디에서 조절하나요?</summary><div class="answer"><p>기기의 음량을 확인해 주세요. 대부분의 게임은 무음 모드에서 소리가 나지 않지만, <strong>달빛 단어 배달은 단어를 들을 수 있도록 무음 모드에서도 소리가 나요.</strong></p><p>앱 안에는 별도의 음소거 또는 음량 설정이 없어요.</p></div></details>
+          <details><summary>달빛 단어 배달의 학습 언어는 어떻게 바꾸나요?</summary><div class="answer"><p>달빛 단어 배달 안의 한국어·영어 버튼으로 아이가 들을 단어의 언어를 선택할 수 있어요. 선택한 학습 언어는 기기에 저장돼요.</p><p>이 선택은 다른 화면의 언어를 바꾸지 않아요. 앱 화면의 언어는 기기의 기본 언어를 따릅니다.</p></div></details>
+          <details><summary>인터넷이나 회원가입이 필요한가요?</summary><div class="answer"><p>설치 후에는 모든 게임을 오프라인으로 즐길 수 있어요. 회원가입, 광고, 앱 내 구매, 추적 기능은 없어요.</p><p>놀이 기록과 달빛 단어 배달의 학습 언어는 기기에만 저장되며 개발자에게 전송되지 않아요.</p></div></details>
+          <details><summary>앱을 삭제하면 놀이 기록은 어떻게 되나요?</summary><div class="answer"><p>앱을 삭제하면 기기에 저장된 놀이 기록도 삭제돼요. 기기 백업에 앱 데이터가 포함될 수 있으며, 해당 백업을 복원하면 기록이 복구될 수 있어요.</p><p>달빛랜드에는 계정이나 자체 클라우드 동기화 기능이 없어요.</p></div></details>
+        </section>
+        <aside class="prepare" aria-labelledby="prepare-ko">
+          <h2 id="prepare-ko">문의 전에 알려 주세요</h2>
+          <p>아래 내용을 함께 보내 주시면 상황을 이해하는 데 도움이 됩니다.</p>
+          <ul><li>이용 중인 게임 이름</li><li>기기 모델과 iOS·iPadOS 버전</li><li>앱 버전</li><li>문제가 발생한 순서</li></ul>
+          <div class="privacy-note">
+            <h3>아이의 개인정보는 보내지 마세요</h3>
+            <p>아이의 이름, 생년월일, 사진, 음성 녹음 등 개인정보는 보내지 말아 주세요. 화면을 첨부할 때도 개인정보를 먼저 가려 주세요.</p>
+            <p>이메일로 문의하면 보내신 이메일 주소와 메시지는 답변과 문제 해결에만 사용됩니다. 자세한 내용은 <a href="privacy.html" hreflang="en">개인정보 처리방침(영문)</a>에서 확인할 수 있어요.</p>
+          </div>
+        </aside>
+      </div>
+      <footer class="site-footer"><p>아이의 작은 놀이에, 다정한 달빛을.</p><a href="privacy.html" hreflang="en">개인정보 처리방침 (English)</a></footer>
+    </article>
+    <article id="support-en" lang="en" data-content-language="en" aria-labelledby="title-en">
+      <section class="hero" aria-labelledby="title-en">
+        <div>
+          <p class="eyebrow">DALBITLAND SUPPORT</p>
+          <h1 id="title-en">A little help,<br>for happy little play.</h1>
+          <p class="intro">Keep your child’s playtime going.<br>Find everyday answers and a way to get in touch.</p>
+          <div class="chips"><span>Plays offline</span><span>No ads or in-app purchases</span><span>iPhone · iPad</span></div>
+        </div>
+        <aside class="contact" aria-labelledby="contact-en">
+          <span class="moon" aria-hidden="true"></span><span class="sparkle" aria-hidden="true">✧ ·</span>
+          <h2 id="contact-en">Need a hand?</h2>
+          <p>Email us for help, feedback, or questions about privacy.</p>
+          <button class="button" type="button" data-contact disabled>Email for support<span aria-hidden="true">↗</span></button>
+          <noscript><p class="note">To use email support, enable JavaScript in your browser and set up an email app.</p></noscript>
+          <p class="note">Opens your email app. Nothing is sent until you send the email yourself.</p>
+        </aside>
+      </section>
+      <div class="help">
+        <section aria-labelledby="faq-en">
+          <h2 class="section-title" id="faq-en">Frequently asked questions</h2>
+          <p class="section-intro">A few helpful things to know before you play.</p>
+          <details><summary>Which devices can we play on?</summary><div class="answer"><p>dalbitLand is a collection of offline games for toddlers. It needs iOS or iPadOS 18 or later. Play in portrait on iPhone, or in portrait or landscape on iPad.</p><p>The app appears in Korean or English, following your device’s main language.</p></div></details>
+          <details><summary>How do we choose a game or go back?</summary><div class="answer"><p>Swipe through the game cards and tap the one in the middle to start. In a game, tap the Home button at the top left to return to the game list.</p><p>The <strong>ⓘ information button</strong> at the top right of the game list shows privacy and support information, even offline.</p></div></details>
+          <details><summary>Why can’t I hear sound? How do I adjust it?</summary><div class="answer"><p>Check your device volume. Most games stay quiet in silent mode, but <strong>Word Match keeps speaking in silent mode so your child can hear each word.</strong></p><p>There is no separate mute or volume setting inside the app.</p></div></details>
+          <details><summary>How do I change the Word Match learning language?</summary><div class="answer"><p>Use the Korean and English buttons inside Word Match to choose the language your child hears. Your choice is saved on the device.</p><p>This does not change the language of other screens. The app’s interface follows your device’s main language.</p></div></details>
+          <details><summary>Do we need the internet or an account?</summary><div class="answer"><p>Every game works offline once installed. There are no accounts, ads, in-app purchases, or tracking.</p><p>Play records and the Word Match learning language stay on your device. The app never sends them to the developer.</p></div></details>
+          <details><summary>What happens to records if I delete the app?</summary><div class="answer"><p>Deleting the app deletes its saved play records. A device backup may include app data, and restoring that backup can bring the records back.</p><p>dalbitLand has no accounts and no cloud sync of its own.</p></div></details>
+        </section>
+        <aside class="prepare" aria-labelledby="prepare-en">
+          <h2 id="prepare-en">What to include in your email</h2>
+          <p>These details help us understand what happened.</p>
+          <ul><li>The game you were playing</li><li>Device model and iOS or iPadOS version</li><li>App version</li><li>Steps leading up to the problem</li></ul>
+          <div class="privacy-note">
+            <h3>Please leave out your child’s personal details</h3>
+            <p>Do not send your child’s name, date of birth, photos, voice recordings, or other personal details. Remove personal information from any screenshot before sending it.</p>
+            <p>When you email, your address and message are used only to reply and sort out the problem. Read more in the <a href="privacy.html" hreflang="en">privacy policy</a>.</p>
+          </div>
+        </aside>
+      </div>
+      <footer class="site-footer"><p>A little moonlight for little moments of play.</p><a href="privacy.html" hreflang="en">Privacy policy</a></footer>
+    </article>
+  </main>
+  <script>
+    document.querySelectorAll('[data-language-link]').forEach(link => {
+      if (link.dataset.languageLink === document.documentElement.lang) {
+        link.setAttribute('aria-current', 'true');
+      }
+    });
+  </script>
+  <script>
+    document.querySelectorAll('[data-contact]').forEach(button => {
+      button.addEventListener('click', () => {
+        const address = String.fromCharCode(115, 104, 97, 110, 101, 112, 97, 114, 107, 46, 100, 101, 118, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109);
+        window.location.href = 'mail' + 'to:' + address;
+      });
+      button.disabled = false;
+    });
+  </script>
+</body>
+</html>

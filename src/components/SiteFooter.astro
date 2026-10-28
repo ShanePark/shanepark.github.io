@@ -1,0 +1,15 @@
+---
+import T from './T.astro';
+interface Props { links?: { href: string; en: string; ko: string }[] }
+const { links = [] } = Astro.props;
+---
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>© 2026 Shane Park</p>
+    {links.length > 0 && (
+      <p class="footer-links">
+        {links.map(link => <a href={link.href}><T en={link.en} ko={link.ko} /></a>)}
+      </p>
+    )}
+  </div>
+</footer>

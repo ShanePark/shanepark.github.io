@@ -1,0 +1,18 @@
+---
+import T from './T.astro';
+interface Props { url: string | null; devices: string }
+const { url, devices } = Astro.props;
+---
+<div class="store-slot">
+  {url ? (
+    <a class="store-button" href={url}>
+      <T en="Download on the App Store" ko="App Store에서 다운로드" />
+    </a>
+  ) : (
+    <p class="store-button is-soon">
+      <span class="soon-spark" aria-hidden="true">✦</span>
+      <T en="Coming soon to the App Store" ko="곧 App Store에서 만나요" />
+    </p>
+  )}
+  <p class="devices">{devices}</p>
+</div>

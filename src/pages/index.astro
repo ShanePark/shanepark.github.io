@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import T from '../components/T.astro';
+import LangToggle from '../components/LangToggle.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { apps } from '../data/apps';
+import '../styles/home.css';
+---
+<Base
+  title="Apps by Shane Park"
+  titleKo="Shane Park의 앱"
+  description="Gentle, ad-free games for little children on iPhone and iPad."
+>
+  <header class="topbar">
+    <span class="topbar-brand home-topbar-title">Shane Park</span>
+    <LangToggle />
+  </header>
+
+  <main>
+    <section class="home-hero" aria-labelledby="home-title">
+      <div class="wrap">
+        <h1 id="home-title"><T en="Little games for little ones" ko="아이를 위한 작은 게임들" /></h1>
+        <p class="section-lead"><T en="Gentle iPhone and iPad games for young children. No ads, no purchases, no data collected." ko="어린아이를 위한 다정한 iPhone, iPad 게임이에요. 광고도, 결제도, 정보 수집도 없어요." /></p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <ul class="app-list">
+        {apps.map(app => (
+          <li>
+            <a class="app-card" href={app.path}>
+              <Image class="app-cover" src={app.cover} alt="" widths={[560, 1120]} sizes="(min-width: 760px) 545px, 100vw" />
+              <div class="app-body">
+                <Image class="app-icon" src={app.icon} alt="" widths={[96, 192]} sizes="96px" />
+                <h2><T {...app.name} /></h2>
+                <p><T {...app.tagline} /></p>
+                <div class="app-meta">
+                  <span class="chip">{app.devices}</span>
+                  {!app.appStoreUrl && <span class="chip chip-soon"><T en="Coming soon" ko="출시 예정" /></span>}
+                  <span class="app-go" aria-hidden="true">→</span>
+                </div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </main>
+
+  <SiteFooter />
+</Base>

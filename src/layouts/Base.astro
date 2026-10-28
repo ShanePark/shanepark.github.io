@@ -1,0 +1,58 @@
+---
+import '../styles/base.css';
+
+interface Props {
+  title: string;
+  titleKo?: string;
+  description: string;
+  icon?: string;
+  touchIcon?: string;
+  ogImage?: string;
+  themeColor?: string;
+  /** Theme class for app-specific color tokens, such as theme-dalbit. */
+  theme?: string;
+}
+const { title, titleKo = title, description, icon = '/favicon.svg', touchIcon, ogImage, themeColor = '#fff8ee', theme } = Astro.props;
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+---
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content={themeColor}>
+<meta name="referrer" content="no-referrer">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+{ogImageUrl && <meta property="og:image" content={ogImageUrl}>}
+<meta property="og:type" content="website">
+<link rel="icon" href={icon}>
+{touchIcon && <link rel="apple-touch-icon" href={touchIcon}>}
+<script is:inline define:vars={{ titleKo }}>
+  // Pick the language from ?lang=, a remembered choice or the browser before first paint.
+  (() => {
+    const key = 'site-language';
+    const valid = value => value === 'en' || value === 'ko';
+    const requested = new URLSearchParams(location.search).get('lang');
+    let saved = null;
+    try { saved = localStorage.getItem(key); } catch {}
+    const language = valid(requested) ? requested
+      : valid(saved) ? saved
+      : (navigator.language || '').toLowerCase().startsWith('ko') ? 'ko' : 'en';
+    if (valid(requested)) {
+      try { localStorage.setItem(key, requested); } catch {}
+    }
+    document.documentElement.lang = language;
+    document.documentElement.dataset.lang = language;
+    if (language === 'ko') document.title = titleKo;
+  })();
+</script>
+<slot name="head" />
+</head>
+<body class={theme}>
+<slot />
+</body>
+</html>

@@ -1,0 +1,11 @@
+---
+---
+<nav class="lang-toggle" aria-label="Language · 언어">
+  <a href="?lang=en" hreflang="en" data-lang-link="en">EN</a>
+  <a href="?lang=ko" hreflang="ko" lang="ko" data-lang-link="ko">한국어</a>
+</nav>
+<script is:inline>
+  document.querySelectorAll('[data-lang-link]').forEach(link => {
+    if (link.dataset.langLink === document.documentElement.dataset.lang) link.setAttribute('aria-current', 'true');
+  });
+</script>

@@ -1,0 +1,174 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import T from '../../components/T.astro';
+import LangToggle from '../../components/LangToggle.astro';
+import StoreButton from '../../components/StoreButton.astro';
+import Phone from '../../components/Phone.astro';
+import Promises from '../../components/Promises.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { appById } from '../../data/apps';
+import '../../styles/landing.css';
+
+import heroTall from '../../assets/lulu/hero-tall.webp';
+import heroWide from '../../assets/lulu/hero-wide.webp';
+import wordmark from '../../assets/lulu/wordmark.webp';
+import butterfly from '../../assets/lulu/butterfly.webp';
+import mapGlyph from '../../assets/lulu/map.webp';
+import worldMap from '../../assets/lulu/world-map.webp';
+import screenGarden from '../../assets/lulu/screen-garden.webp';
+import screenCarousel from '../../assets/lulu/screen-carousel.webp';
+import screenSafari from '../../assets/lulu/screen-safari.webp';
+import screenFountain from '../../assets/lulu/screen-fountain.webp';
+import placeGarden from '../../assets/lulu/place-garden.webp';
+import placePark from '../../assets/lulu/place-daeheung-park.webp';
+import placeFarm from '../../assets/lulu/place-farm.webp';
+import placeDalbit from '../../assets/lulu/place-amusement-park.webp';
+import lulu from '../../assets/lulu/friend-lulu.webp';
+import sori from '../../assets/lulu/friend-sori.webp';
+import jini from '../../assets/lulu/friend-jini.webp';
+import hani from '../../assets/lulu/friend-hani.webp';
+import hyeoni from '../../assets/lulu/friend-hyeoni.webp';
+import yuri from '../../assets/lulu/friend-yuri.webp';
+
+const app = appById('lulu');
+const wide = await getImage({ src: heroWide, widths: [960, 1600], format: 'webp' });
+const tall = await getImage({ src: heroTall, widths: [480, 800], format: 'webp' });
+const map = await getImage({ src: worldMap, width: 900, format: 'webp' });
+
+const screens = [
+  { src: screenGarden, alt: 'Lulu walking along a garden path while friends hide behind flower bushes · 꽃 덤불 뒤에 친구들이 숨어 있는 정원 길을 걷는 루루', en: 'Find friends hiding in the flowers', ko: '꽃밭에 숨은 친구를 찾아요' },
+  { src: screenCarousel, alt: 'Lulu waiting at the carousel gate in Dalbit Land · 달빛랜드 회전목마 입구에 선 루루', en: 'Ride the carousel in Dalbit Land', ko: '달빛랜드에서 회전목마를 타요' },
+  { src: screenSafari, alt: 'Lulu riding the safari bus past friendly animals · 순한 동물들 곁을 지나는 사파리 버스에 탄 루루', en: 'Meet animals from the safari bus', ko: '사파리 버스에서 동물 친구를 만나요' },
+  { src: screenFountain, alt: 'Lulu in front of the moon fountain in the plaza · 광장의 달님 분수 앞에 선 루루', en: 'Splash by the moon fountain', ko: '달님 분수 앞에서 놀아요' },
+];
+
+const places = [
+  { src: placeGarden, name: { en: 'Garden', ko: '정원' }, text: { en: 'Hide-and-seek among the flowers, a sparkling fountain and a cozy tent.', ko: '꽃 사이 숨바꼭질, 반짝이는 분수, 아늑한 텐트가 있어요.' } },
+  { src: placePark, name: { en: 'Daeheung Park', ko: '대흥공원' }, text: { en: 'A playground to climb and slide, acorns and leaves to gather, and a picnic lunchbox to fill.', ko: '오르고 미끄러지는 놀이터, 도토리와 나뭇잎 줍기, 소풍 도시락 꾸미기.' } },
+  { src: placeFarm, name: { en: 'Farm', ko: '농장' }, text: { en: 'Pull up carrots and sweet potatoes, feed the bunny, and hop on the little train.', ko: '당근과 고구마를 캐고, 토끼에게 먹이를 주고, 꼬마 기차에 올라타요.' } },
+  { src: placeDalbit, name: { en: 'Dalbit Land', ko: '달빛랜드' }, text: { en: 'A carousel, a Ferris wheel, a little Viking ship, duck boats and a safari bus.', ko: '회전목마, 관람차, 꼬마 바이킹, 오리배, 사파리 버스가 기다려요.' } },
+];
+
+const friends = [
+  { src: lulu, en: 'Lulu', ko: '루루' },
+  { src: sori, en: 'Sori', ko: '소리' },
+  { src: jini, en: 'Jini', ko: '지니' },
+  { src: hani, en: 'Hani', ko: '하니' },
+  { src: hyeoni, en: 'Hyeoni', ko: '혀니' },
+  { src: yuri, en: 'Yuri', ko: '유리' },
+];
+
+const promises = [
+  { icon: 'picture', title: { en: 'No reading needed', ko: '글을 몰라도 괜찮아요' }, text: { en: 'Pictures and motion guide every step. A little butterfly shows the way when your child wants a hint.', ko: '그림과 움직임만으로 놀 수 있어요. 도움이 필요하면 작은 나비가 길을 알려 줘요.' } },
+  { icon: 'finger', title: { en: 'One finger is enough', ko: '손가락 하나면 충분해요' }, text: { en: 'Tap to walk, tap to play. No dragging, timing or tricky gestures.', ko: '톡 눌러 걷고, 톡 눌러 놀아요. 끌기나 타이밍, 어려운 동작이 없어요.' } },
+  { icon: 'heart', title: { en: 'Nothing to lose', ko: '실패가 없어요' }, text: { en: 'No scores, timers, levels or failing. Just soft chimes, and no voices.', ko: '점수, 시간 제한, 단계, 실패가 없어요. 목소리 없이 부드러운 효과음만 나와요.' } },
+  { icon: 'no-ads', title: { en: 'No ads, nothing to buy', ko: '광고도 결제도 없어요' }, text: { en: 'No advertising, no in-app purchases, no accounts and no links out of the game.', ko: '광고, 인앱 결제, 계정, 게임 밖으로 나가는 링크가 없어요.' } },
+  { icon: 'shield', title: { en: 'Private and offline', ko: '인터넷 없이, 정보 수집 없이' }, text: { en: 'The game never goes online and collects no data. Progress stays on your device.', ko: '인터넷에 연결하지 않고 아무 정보도 수집하지 않아요. 게임 기록은 기기에만 남아요.' } },
+  { icon: 'moon', title: { en: 'A gentle stopping point', ko: '편안하게 멈출 수 있어요' }, text: { en: 'Pause any time and head home. Nothing plays on by itself, and reduced motion is respected.', ko: '언제든 멈추고 첫 화면으로 돌아갈 수 있어요. 저절로 이어지지 않고, 동작 줄이기 설정도 따라요.' } },
+];
+---
+<Base
+  title="Lulu’s Little Adventures · 루루 어드벤처"
+  titleKo="루루 어드벤처 · Lulu’s Little Adventures"
+  description="A gentle, picture-only exploring game for little children on iPhone and iPad. No reading, no ads, no purchases, no data collected."
+  icon="/lulu/favicon.png"
+  touchIcon="/lulu/apple-touch-icon.png"
+  ogImage={wide.srcSet.values.at(-1)?.url ?? wide.src}
+  themeColor="#bfe3f7"
+>
+  <header class="topbar">
+    <a class="topbar-brand" href="/">
+      <Image src={app.icon} alt="" width={40} height={40} />
+      <span class="brand-name"><T {...app.name} /></span>
+    </a>
+    <LangToggle />
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <picture class="hero-sky">
+        <source media="(min-aspect-ratio: 4/5)" srcset={wide.srcSet.attribute} sizes="100vw">
+        <img src={tall.src} srcset={tall.srcSet.attribute} sizes="100vw" alt="" width={tall.attributes.width} height={tall.attributes.height} fetchpriority="high">
+      </picture>
+      <div class="hero-inner">
+        <h1 id="hero-title" class="wordmark">
+          <Image src={wordmark} alt="루루 어드벤처 · Lulu’s Little Adventures" widths={[400, 792]} sizes="min(620px, 92vw)" loading="eager" />
+        </h1>
+        <p class="hero-lead"><T en="A gentle, picture-only world for little explorers." ko="글자 없이 그림만으로 즐기는, 꼬마 탐험가의 다정한 세상." /></p>
+        <StoreButton url={app.appStoreUrl} devices={app.devices} />
+      </div>
+      <Image class="hero-mascot" src={lulu} alt="" width={240} loading="eager" />
+      <Image class="flutter" src={butterfly} alt="" width={160} loading="eager" />
+    </section>
+
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="wrap">
+        <h2 id="intro-title"><T en="Tap, walk, discover." ko="톡 누르고, 걷고, 발견해요." /></h2>
+        <p class="section-lead"><T en="Your child walks Lulu anywhere with a single tap. Every bench, bush and ride invites a little play, in any order and as often as they like." ko="손가락으로 톡 누르면 루루가 그곳으로 걸어가요. 벤치도, 덤불도, 놀이기구도 모두 작은 놀이가 되고, 순서 없이 몇 번이고 다시 놀 수 있어요." /></p>
+      </div>
+      <ul class="screens" aria-label="Screens · 게임 화면">
+        {screens.map(screen => (
+          <li>
+            <Phone src={screen.src} alt={screen.alt} />
+            <p><T en={screen.en} ko={screen.ko} /></p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="places" aria-labelledby="places-title" style={`--places-bg: url(${map.src})`}>
+      <div class="wrap">
+        <h2 id="places-title"><T en="Four places to wander" ko="걸어서 만나는 네 곳" /></h2>
+        <p class="section-lead">
+          <T en="Walk from place to place, or open the folded map and tap a round picture to go there at once." ko="걸어서 이곳저곳 다니거나, 접힌 지도를 열고 동그란 그림을 눌러 바로 갈 수 있어요." />
+          <Image class="inline-glyph" src={mapGlyph} alt="" width={68} />
+        </p>
+        <ul class="place-list">
+          {places.map(place => (
+            <li>
+              <Image src={place.src} alt="" widths={[190, 384]} sizes="190px" loading="lazy" />
+              <h3><T {...place.name} /></h3>
+              <p><T {...place.text} /></p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="friends" aria-labelledby="friends-title">
+      <div class="wrap">
+        <h2 id="friends-title"><T en="Play as Lulu or a friend" ko="루루와 친구들" /></h2>
+        <p class="section-lead"><T en="Pick a face on the home screen and that friend goes exploring." ko="첫 화면에서 얼굴을 고르면 그 친구가 탐험을 떠나요." /></p>
+        <ul class="friend-list">
+          {friends.map(friend => (
+            <li><Image src={friend.src} alt="" width={240} loading="lazy" /><T en={friend.en} ko={friend.ko} /></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <Promises title={{ en: 'Made for little hands, kind to grown-ups', ko: '작은 손을 위해, 보호자는 안심하도록' }} items={promises} />
+
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="wrap closing-inner">
+        <Image class="closing-friends" src={sori} alt="" width={240} loading="lazy" />
+        <div>
+          <h2 id="closing-title"><T en="Coming soon for iPhone and iPad" ko="iPhone과 iPad에서 곧 만나요" /></h2>
+          <p class="section-lead"><T en="Questions? We are happy to help." ko="궁금한 점이 있으면 언제든 물어보세요." /></p>
+          <p class="link-row">
+            <a class="pill-link" href="/lulu/support.html"><T en="Support" ko="고객 지원" /></a>
+            <a class="pill-link" href="/lulu/privacy.html"><T en="Privacy" ko="개인정보 처리방침" /></a>
+          </p>
+        </div>
+        <Image class="closing-friends" src={jini} alt="" width={240} loading="lazy" />
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter links={[
+    { href: '/lulu/support.html', en: 'Support', ko: '고객 지원' },
+    { href: '/lulu/privacy.html', en: 'Privacy', ko: '개인정보 처리방침' },
+    { href: '/lulu/licenses.html', en: 'Licenses', ko: '라이선스' },
+  ]} />
+</Base>
