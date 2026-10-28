@@ -2,16 +2,19 @@
 import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import T from '../../components/T.astro';
-import LangToggle from '../../components/LangToggle.astro';
+import TopbarActions from '../../components/TopbarActions.astro';
 import StoreButton from '../../components/StoreButton.astro';
-import Phone from '../../components/Phone.astro';
+import ScrollStory from '../../components/ScrollStory.astro';
 import Promises from '../../components/Promises.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import { appById } from '../../data/apps';
 import '../../styles/landing.css';
 import '../../styles/dalbit.css';
+import '../../styles/scroll.css';
 
 import hero from '../../assets/dalbitland/hero.webp';
+import heroDay from '../../assets/dalbitland/hero-day.webp';
+import promiseArt from '../../assets/dalbitland/promise-moon.webp';
 import bunny from '../../assets/dalbitland/bunny.webp';
 import balloonPop from '../../assets/dalbitland/game-balloon-pop.webp';
 import shapePuzzle from '../../assets/dalbitland/game-shape-puzzle.webp';
@@ -29,44 +32,47 @@ import wordMatch from '../../assets/dalbitland/game-word-match.webp';
 import screenLibraryEn from '../../assets/dalbitland/screen-library-en.webp';
 import screenLibraryKo from '../../assets/dalbitland/screen-library-ko.webp';
 import screenColoring from '../../assets/dalbitland/screen-coloring.webp';
-import screenCarWash from '../../assets/dalbitland/screen-car-wash.webp';
-import screenTrampolineEn from '../../assets/dalbitland/screen-trampoline-en.webp';
-import screenTrampolineKo from '../../assets/dalbitland/screen-trampoline-ko.webp';
+import screenBalloonPop from '../../assets/dalbitland/screen-balloon-pop.webp';
+import screenWordMatchEn from '../../assets/dalbitland/screen-word-match-en.webp';
+import screenWordMatchKo from '../../assets/dalbitland/screen-word-match-ko.webp';
+import screenRacing from '../../assets/dalbitland/screen-racing.webp';
 
 const app = appById('dalbitland');
 const heroImage = await getImage({ src: hero, widths: [800, 1448], format: 'webp' });
+const heroDayImage = await getImage({ src: heroDay, widths: [800, 1365], format: 'webp' });
 
-// Display order and names match the in-app game library.
+// Display order and names match the in-app game library; each card names the skill it practices.
 const games = [
-  { src: balloonPop, name: { en: 'Balloon Parade', ko: '달빛 풍선놀이' }, text: { en: 'Pop balloons floating up through a moonlit parade.', ko: '달빛 퍼레이드 속에 떠오르는 풍선을 톡톡 터뜨려요.' } },
-  { src: shapePuzzle, name: { en: 'Shape Puzzle', ko: '모양 퍼즐' }, text: { en: 'Fit each shape into its matching hole.', ko: '모양 조각을 꼭 맞는 자리에 넣어요.' } },
-  { src: blockStacking, name: { en: 'Block Stacking', ko: '블록 쌓기' }, text: { en: 'Drop blocks to build a tower toward the moon.', ko: '블록을 떨어뜨려 달까지 탑을 쌓아요.' } },
-  { src: coloring, name: { en: 'Coloring', ko: '색칠 놀이' }, text: { en: 'Color big storybook pictures with crayons and a paint bucket.', ko: '크레용과 물감 통으로 커다란 그림책 그림을 색칠해요.' } },
-  { src: memoryMatch, name: { en: 'Memory Match', ko: '기억 카드' }, text: { en: 'Flip cards to find the matching pairs.', ko: '카드를 뒤집어 같은 그림 짝을 찾아요.' } },
-  { src: carWash, name: { en: 'Car Wash', ko: '세차 놀이' }, text: { en: 'Foam, scrub, rinse and dry until it shines.', ko: '거품 내고 문지르고 헹구고 말려서 반짝반짝 닦아요.' } },
-  { src: whackAMole, name: { en: 'Whack-a-Mole', ko: '두더지 잡기' }, text: { en: 'Tap the friendly moles as they pop up.', ko: '쏙쏙 나오는 귀여운 두더지를 톡 눌러요.' } },
-  { src: trampoline, name: { en: 'Trampoline', ko: '트램펄린' }, text: { en: 'Tap on each landing to bounce higher and meet new friends.', ko: '착지할 때 톡 눌러 더 높이 뛰고 새 친구를 만나요.' } },
-  { src: cakeMaking, name: { en: 'Moonlight Bakery', ko: '달빛 케이크 만들기' }, text: { en: 'Mix, bake and decorate a cake, then snap a photo.', ko: '반죽하고 굽고 꾸며서 케이크를 만들고 사진을 찍어요.' } },
-  { src: fingerTracing, name: { en: 'Finger Tracing', ko: '손가락 따라 그리기' }, text: { en: 'Trace a path with a finger and a friend follows along.', ko: '손가락으로 길을 따라 그리면 친구가 따라와요.' } },
-  { src: jigsawPuzzle, name: { en: 'Jigsaw Puzzle', ko: '조각 퍼즐' }, text: { en: 'Fit the pieces together to finish storybook scenes.', ko: '조각을 맞춰 그림책 장면을 완성해요.' } },
-  { src: racing, name: { en: 'Racing', ko: '자동차 경주' }, text: { en: 'Steer a little kart around the race course.', ko: '꼬마 자동차를 몰고 경주로를 달려요.' } },
-  { src: wordMatch, name: { en: 'Word Match', ko: '달빛 단어 배달' }, text: { en: 'Hear a word and tap the matching picture, in Korean or English.', ko: '단어를 듣고 맞는 그림을 눌러요. 한국어와 영어로 할 수 있어요.' } },
+  { src: balloonPop, name: { en: 'Balloon Parade', ko: '달빛 풍선놀이' }, skill: { en: 'Hand-eye', ko: '눈·손 협응' } },
+  { src: shapePuzzle, name: { en: 'Shape Puzzle', ko: '모양 퍼즐' }, skill: { en: 'Shapes', ko: '모양 알기' } },
+  { src: blockStacking, name: { en: 'Block Stacking', ko: '블록 쌓기' }, skill: { en: 'Timing', ko: '타이밍' } },
+  { src: coloring, name: { en: 'Coloring', ko: '색칠 놀이' }, skill: { en: 'Colors', ko: '색깔' } },
+  { src: memoryMatch, name: { en: 'Memory Match', ko: '기억 카드' }, skill: { en: 'Memory', ko: '기억력' } },
+  { src: carWash, name: { en: 'Car Wash', ko: '세차 놀이' }, skill: { en: 'Step by step', ko: '순서' } },
+  { src: whackAMole, name: { en: 'Whack-a-Mole', ko: '두더지 잡기' }, skill: { en: 'Quick eyes', ko: '순발력' } },
+  { src: trampoline, name: { en: 'Trampoline', ko: '트램펄린' }, skill: { en: 'Rhythm', ko: '리듬감' } },
+  { src: cakeMaking, name: { en: 'Moonlight Bakery', ko: '달빛 케이크 만들기' }, skill: { en: 'Cause and effect', ko: '원인과 결과' } },
+  { src: fingerTracing, name: { en: 'Finger Tracing', ko: '손가락 따라 그리기' }, skill: { en: 'Fine motor', ko: '손끝 조절' } },
+  { src: jigsawPuzzle, name: { en: 'Jigsaw Puzzle', ko: '조각 퍼즐' }, skill: { en: 'Spatial sense', ko: '공간 감각' } },
+  { src: racing, name: { en: 'Racing', ko: '자동차 경주' }, skill: { en: 'Direction', ko: '방향 감각' } },
+  { src: wordMatch, name: { en: 'Word Match', ko: '달빛 단어 배달' }, skill: { en: 'First words', ko: '첫 단어' } },
 ];
 
-const screens = [
-  { en: screenLibraryEn, ko: screenLibraryKo, alt: 'Game cards on the dalbitLand home screen · 달빛랜드 첫 화면의 게임 카드', caption: { en: 'Pick a game card', ko: '게임 카드를 골라요' } },
-  { en: screenColoring, ko: screenColoring, alt: 'A whale picture ready to color with crayons · 크레용으로 색칠할 고래 그림', caption: { en: 'Color a storybook whale', ko: '그림책 고래를 색칠해요' } },
-  { en: screenCarWash, ko: screenCarWash, alt: 'A red truck waiting at the car wash · 세차를 기다리는 빨간 트럭', caption: { en: 'Make a truck sparkle', ko: '트럭을 반짝반짝 닦아요' } },
-  { en: screenTrampolineEn, ko: screenTrampolineKo, alt: 'A star friend bouncing on a moonlit trampoline · 달빛 트램펄린에서 뛰는 별 친구', caption: { en: 'Bounce up toward the moon', ko: '달을 향해 통통 뛰어요' } },
+const story = [
+  { screen: { en: screenLibraryEn, ko: screenLibraryKo }, alt: 'Game cards on the dalbitLand home screen · 달빛랜드 첫 화면의 게임 카드', title: { en: 'Pick a card, start playing', ko: '카드를 골라 바로 시작' }, text: { en: 'No reading needed.', ko: '글을 몰라도 괜찮아요.' } },
+  { screen: { en: screenBalloonPop, ko: screenBalloonPop }, alt: 'Colorful balloons floating up under the night sky · 밤하늘로 떠오르는 알록달록 풍선', title: { en: 'Pop, pop, pop', ko: '풍선을 톡톡' }, text: { en: 'Eyes and hands, working together.', ko: '눈과 손이 함께 움직여요.' } },
+  { screen: { en: screenWordMatchEn, ko: screenWordMatchKo }, alt: 'A word shown above three picture cards to choose from · 단어 하나와 고를 수 있는 그림 카드 세 장', title: { en: 'Words meet pictures', ko: '단어와 그림 짝꿍' }, text: { en: '445 words in Korean or English.', ko: '한국어·영어 445개 단어.' } },
+  { screen: { en: screenColoring, ko: screenColoring }, alt: 'A whale picture ready to color with crayons · 크레용으로 색칠할 고래 그림', title: { en: 'Color a storybook whale', ko: '그림책 고래 색칠하기' }, text: { en: 'Crayons and a paint bucket.', ko: '크레용과 물감 통으로 쓱쓱.' } },
+  { screen: { en: screenRacing, ko: screenRacing }, alt: 'Animal friends in karts lined up at the starting line · 출발선에 줄지어 선 동물 친구들의 자동차', title: { en: 'Ready, set, race', ko: '준비, 출발!' }, text: { en: 'Steer left and right around the track.', ko: '왼쪽 오른쪽, 방향을 익혀요.' } },
 ];
 
 const promises = [
-  { icon: 'picture', title: { en: 'Made for little fingers', ko: '작은 손에 꼭 맞게' }, text: { en: 'Big, bright pictures and buttons. No reading is needed to start playing.', ko: '크고 또렷한 그림과 버튼. 글을 몰라도 바로 놀 수 있어요.' } },
-  { icon: 'no-ads', title: { en: 'No ads, nothing to buy', ko: '광고도 결제도 없어요' }, text: { en: 'No advertising, no in-app purchases and no links out of the app.', ko: '광고, 인앱 결제, 앱 밖으로 나가는 링크가 없어요.' } },
-  { icon: 'shield', title: { en: 'Private and offline', ko: '인터넷 없이, 정보 수집 없이' }, text: { en: 'Plays without the internet and collects no data. Scores and unlocks stay on the device.', ko: '인터넷 없이 놀고 아무 정보도 수집하지 않아요. 기록은 기기에만 남아요.' } },
-  { icon: 'heart', title: { en: 'No accounts or permissions', ko: '가입도 권한 요청도 없어요' }, text: { en: 'Nothing to sign up for and no permission prompts. Open the app and play.', ko: '회원가입도 권한 요청도 없어요. 열면 바로 놀아요.' } },
-  { icon: 'globe', title: { en: 'Korean and English', ko: '한국어와 영어' }, text: { en: 'The app follows the device language, and Word Match teaches words in either one.', ko: '기기 언어를 따라가고, 달빛 단어 배달에서는 한국어와 영어 단어를 모두 배울 수 있어요.' } },
-  { icon: 'tablet', title: { en: 'iPhone and iPad', ko: 'iPhone과 iPad' }, text: { en: 'Upright on iPhone, and any way round on iPad.', ko: 'iPhone은 세로로, iPad는 어느 방향으로든 즐겨요.' } },
+  { icon: 'picture', title: { en: 'Big pictures, big buttons', ko: '큰 그림, 큰 버튼' } },
+  { icon: 'no-ads', title: { en: 'No ads or purchases', ko: '광고·결제 없음' } },
+  { icon: 'shield', title: { en: 'No data collected', ko: '정보 수집 없음' } },
+  { icon: 'moon', title: { en: 'Plays offline', ko: '인터넷 없이 OK' } },
+  { icon: 'heart', title: { en: 'No sign-up', ko: '가입·권한 요청 없음' } },
+  { icon: 'globe', title: { en: 'Korean and English', ko: '한국어 · English' } },
 ] as const;
 
 const support = [
@@ -77,44 +83,53 @@ const support = [
 <Base
   title="dalbitLand · 달빛랜드"
   titleKo="달빛랜드 · dalbitLand"
-  description="Little games for toddlers in a moonlit amusement park, on iPhone and iPad. No ads, no purchases, no data collected, fully offline."
+  description="Little games where toddlers play, learn and grow in a moonlit amusement park, on iPhone and iPad. Practice coordination, shapes, colors, memory and first words. No ads, no purchases, no data collected, fully offline."
   icon="/dalbitland/favicon.png"
   touchIcon="/dalbitland/apple-touch-icon.png"
-  ogImage={heroImage.srcSet.values.at(-1)?.url ?? heroImage.src}
-  themeColor="#14123d"
+  ogImage="/dalbitland/og.jpg"
+  themeColor="#f4ecfd"
+  themeColorDark="#14123d"
   theme="theme-dalbit"
 >
-  <header class="topbar">
+  <header class="topbar is-floating">
     <a class="topbar-brand" href="/">
       <Image src={app.icon} alt="" width={40} height={40} />
       <span class="brand-name"><T {...app.name} /></span>
     </a>
-    <LangToggle />
+    <TopbarActions />
   </header>
 
   <main>
     <section class="dalbit-hero" aria-labelledby="hero-title">
-      <img class="dalbit-hero-bg" src={heroImage.src} srcset={heroImage.srcSet.attribute} sizes="100vw" alt="" fetchpriority="high">
+      <img class="dalbit-hero-bg" data-t="dark" src={heroImage.src} srcset={heroImage.srcSet.attribute} sizes="100vw" alt="" loading="lazy">
+      <img class="dalbit-hero-bg" data-t="light" src={heroDayImage.src} srcset={heroDayImage.srcSet.attribute} sizes="100vw" alt="" loading="lazy">
       <Image class="dalbit-icon" src={app.icon} alt="" widths={[148, 296]} sizes="148px" loading="eager" />
       <h1 id="hero-title" class="dalbit-title"><T {...app.name} /></h1>
-      <p class="dalbit-lead"><T en="Little games for toddlers in a moonlit amusement park." ko="달빛 놀이공원에서 즐기는 아기들의 첫 게임." /></p>
+      <p class="dalbit-lead"><T en="First games to play, learn and grow." ko="놀면서 자라는 우리 아이 첫 게임" /></p>
       <StoreButton url={app.appStoreUrl} devices={app.devices} />
       <Image class="dalbit-bunny" src={bunny} alt="" width={150} loading="eager" />
     </section>
 
-    <section class="games" aria-labelledby="games-title">
+    <section class="intro" aria-labelledby="intro-title">
       <div class="wrap">
-        <h2 id="games-title"><T en="Little games under the moon" ko="달빛 아래 작은 놀이들" /></h2>
-        <p class="section-lead"><T en="Tap a card and play. Each game is short, gentle and ready to play again." ko="카드를 톡 누르면 바로 시작해요. 짧고 다정한 놀이를 몇 번이고 다시 즐겨요." /></p>
+        <h2 id="intro-title" class="eyebrow"><T en="Made for my own little one" ko="우리 아이를 위해 만들었어요" /></h2>
+        <p class="statement"><span class="fill-text"><T en="A few minutes of screen time, turned into joyful play that helps them grow." ko="화면 앞 짧은 시간도, 즐겁게 자라는 놀이가 되도록." /></span></p>
+      </div>
+    </section>
+
+    <section class="games" aria-labelledby="games-title" style={`--n: ${games.length}`}>
+      <div class="wrap games-pin">
+        <h2 id="games-title"><T en="Games to grow through play" ko="놀면서 자라는 놀이들" /></h2>
         <ul class="game-list">
           {games.map(game => (
             <li>
-              <Image src={game.src} alt="" widths={[240, 480]} sizes="(min-width: 1000px) 260px, (min-width: 640px) 30vw, 45vw" loading="lazy" />
+              <Image src={game.src} alt="" widths={[240, 480]} sizes="(min-width: 1000px) 270px, (min-width: 640px) 30vw, 64vw" loading="eager" decoding="async" fetchpriority="low" />
               <h3><T {...game.name} /></h3>
-              <p><T {...game.text} /></p>
+              <p class="skill"><T {...game.skill} /></p>
             </li>
           ))}
         </ul>
+        <div class="games-progress" aria-hidden="true"><span></span></div>
       </div>
     </section>
 
@@ -122,30 +137,15 @@ const support = [
       <div class="wrap">
         <h2 id="screens-title"><T en="Big pictures, little hands" ko="큰 그림, 작은 손" /></h2>
       </div>
-      <ul class="screens" aria-label="Screens · 게임 화면">
-        {screens.map(screen => (
-          <li>
-            {screen.en === screen.ko ? (
-              <Phone src={screen.en} alt={screen.alt} />
-            ) : (
-              <>
-                <div data-l="en"><Phone src={screen.en} alt={screen.alt} /></div>
-                <div data-l="ko" lang="ko"><Phone src={screen.ko} alt={screen.alt} /></div>
-              </>
-            )}
-            <p><T {...screen.caption} /></p>
-          </li>
-        ))}
-      </ul>
+      <ScrollStory items={story} />
     </section>
 
-    <Promises title={{ en: 'Calm play, peace of mind', ko: '아이는 즐겁게, 보호자는 마음 편히' }} items={[...promises]} />
+    <Promises title={{ en: 'Joyful for kids, easy for grown-ups', ko: '아이는 즐겁게, 보호자는 마음 편히' }} art={promiseArt} items={[...promises]} />
 
     <section class="closing dalbit-closing" aria-labelledby="closing-title">
       <div class="wrap">
         <Image class="closing-bunny" src={bunny} alt="" width={160} loading="lazy" />
         <h2 id="closing-title"><T en="Coming soon for iPhone and iPad" ko="iPhone과 iPad에서 곧 만나요" /></h2>
-        <p class="section-lead"><T en="Questions? We are happy to help." ko="궁금한 점이 있으면 언제든 물어보세요." /></p>
         <p class="link-row">
           {support.map(link => <a class="pill-link" href={link.href}><T en={link.en} ko={link.ko} /></a>)}
         </p>

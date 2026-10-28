@@ -1,13 +1,11 @@
 ---
 import Doc from '../../layouts/Doc.astro';
-import { luluDocApp, luluDocPages } from '../../data/luluDocs';
 import body from '../../content/lulu/licenses.html?raw';
 ---
 <Doc
-  app={luluDocApp}
+  appId="lulu"
   page="licenses.html"
-  title="Lulu’s Little Adventures – Open-Source Licenses"
+  title={{ en: 'Open-Source Licenses', ko: '오픈 소스 라이선스' }}
   description="Open-source notices for Lulu’s Little Adventures (루루 어드벤처), built with Godot Engine 4.7.2."
-  pages={luluDocPages}
   body={body}
 />

@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import T from './T.astro';
+import type { Text } from '../data/apps';
+
+// The phone and its caption pin together; scrolling steps through the screens while
+// each caption fades in place. Without the script the captions read as a plain list.
+interface Props {
+  items: { screen: { en: ImageMetadata; ko: ImageMetadata }; alt: string; title: Text; text: Text }[];
+}
+const { items } = Astro.props;
+const sizes = '(min-width: 900px) 320px, 64vw';
+---
+<div class="story" data-story style={`--n: ${items.length}`}>
+  <div class="story-stage">
+    <div class="phone story-phone">
+      {items.map((item, i) => (
+        <div class:list={['story-screen', { 'is-active': i === 0 }]}>
+          {item.screen.en === item.screen.ko ? (
+            <Image src={item.screen.en} alt={item.alt} widths={[300, 450, 640]} sizes={sizes} loading={i === 0 ? 'eager' : 'lazy'} />
+          ) : (
+            <>
+              <Image data-l="en" src={item.screen.en} alt={item.alt} widths={[300, 450, 640]} sizes={sizes} loading={i === 0 ? 'eager' : 'lazy'} />
+              <Image data-l="ko" src={item.screen.ko} alt={item.alt} widths={[300, 450, 640]} sizes={sizes} loading={i === 0 ? 'eager' : 'lazy'} />
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+    <div class="story-copy">
+      <ol class="story-captions">
+        {items.map((item, i) => (
+          <li class:list={['story-caption', { 'is-active': i === 0 }]}>
+            <p class="story-count">{String(i + 1).padStart(2, '0')}</p>
+            <h3><T {...item.title} /></h3>
+            <p><T {...item.text} /></p>
+          </li>
+        ))}
+      </ol>
+      <ol class="story-dots" aria-hidden="true">
+        {items.map((_, i) => <li class:list={{ 'is-active': i === 0 }} />)}
+      </ol>
+    </div>
+  </div>
+</div>
+<script is:inline>
+  // Split the story's scroll length into equal steps and activate the matching screen, caption and dot.
+  document.querySelectorAll('[data-story]').forEach(story => {
+    const groups = ['.story-screen', '.story-caption', '.story-dots li'].map(s => [...story.querySelectorAll(s)]);
+    const count = groups[0].length;
+    let current = 0;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const rect = story.getBoundingClientRect();
+      const progress = -rect.top / Math.max(1, rect.height - window.innerHeight);
+      const index = Math.min(count - 1, Math.max(0, Math.floor(progress * count)));
+      if (index === current) return;
+      current = index;
+      groups.forEach(group => group.forEach((el, i) => el.classList.toggle('is-active', i === index)));
+    };
+    const queue = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    };
+    story.classList.add('is-ready');
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    update();
+  });
+</script>

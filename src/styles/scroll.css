@@ -1,0 +1,461 @@
+/* Scroll-linked layout and motion for the landing pages.
+   Content is complete without it: scroll animations only add a starting state, and the
+   pinned game gallery turns on only where scroll timelines exist and motion is allowed. */
+
+@property --fill {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 100%;
+}
+
+/* Big statement text */
+
+.statement {
+  max-width: 46rem;
+  margin: 22px auto 0;
+  color: var(--ink);
+  font-size: clamp(1.35rem, 1rem + 1.8vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+/* Pinned phone story: the phone and caption hold still while the screens change */
+
+.story {
+  margin-top: 28px;
+}
+
+.story-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 0 var(--gutter);
+}
+
+.story.is-ready {
+  height: calc(100svh + (var(--n) - 1) * 80svh);
+}
+
+.story.is-ready .story-stage {
+  position: sticky;
+  top: 0;
+  justify-content: center;
+  height: 100svh;
+  padding-top: calc(64px + env(safe-area-inset-top));
+}
+
+.story-phone {
+  position: relative;
+  flex: none;
+  width: min(64vw, calc((100svh - 330px) * 390 / 844));
+  aspect-ratio: 390 / 844;
+}
+
+.story-screen {
+  position: absolute;
+  inset: 7px;
+  opacity: 0;
+  scale: 1.06;
+  transition: opacity 0.6s ease, scale 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.story-screen.is-active {
+  opacity: 1;
+  scale: 1;
+}
+
+.story-screen img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.story-copy {
+  width: min(100%, 440px);
+  text-align: center;
+}
+
+.story-captions {
+  display: grid;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story.is-ready .story-caption {
+  grid-area: 1 / 1;
+  opacity: 0;
+  translate: 0 8px;
+  filter: blur(6px);
+  transition: opacity 0.35s ease, translate 0.35s ease, filter 0.35s ease;
+}
+
+.story.is-ready .story-caption.is-active {
+  opacity: 1;
+  translate: 0;
+  filter: none;
+  transition-duration: 0.6s;
+  transition-delay: 0.15s;
+}
+
+.story-count {
+  margin: 0 0 4px;
+  color: var(--peach-deep);
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.story-caption h3 {
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.5rem);
+  letter-spacing: -0.01em;
+}
+
+.story-caption h3 + p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.story-dots {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story.is-ready .story-dots {
+  display: flex;
+}
+
+.story-dots li {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: width 0.35s ease, background-color 0.35s ease;
+}
+
+.story-dots li.is-active {
+  width: 26px;
+  background: var(--peach);
+}
+
+@media (min-width: 900px) {
+  .story {
+    width: min(1040px, 100% - 2 * var(--gutter));
+    margin-inline: auto;
+  }
+
+  .story-stage {
+    flex-direction: row;
+    justify-content: center;
+    gap: 80px;
+    padding: 0;
+  }
+
+  .story.is-ready .story-stage {
+    padding-top: 40px;
+  }
+
+  .story-phone {
+    width: min(320px, calc((100svh - 170px) * 390 / 844));
+  }
+
+  .story-copy {
+    width: min(440px, 46%);
+    text-align: left;
+  }
+
+  .story-count {
+    font-size: 1rem;
+  }
+
+  .story-caption h3 {
+    font-size: clamp(1.9rem, 1rem + 1.8vw, 2.7rem);
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+  }
+
+  .story-caption h3 + p {
+    margin-top: 14px;
+    font-size: 1.18rem;
+  }
+
+  .story-dots {
+    justify-content: flex-start;
+    margin-top: 28px;
+  }
+}
+
+.games-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  /* Top bar turns to frosted glass once the page moves. */
+  .topbar.is-floating {
+    position: fixed;
+    background: var(--glass);
+    box-shadow: 0 1px 0 var(--line);
+    backdrop-filter: saturate(1.6) blur(18px);
+    -webkit-backdrop-filter: saturate(1.6) blur(18px);
+    animation: topbar-glass linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 30vh;
+  }
+
+  @keyframes topbar-glass {
+    from {
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+
+  /* Heroes drift apart in depth as they scroll away. */
+  .hero,
+  .dalbit-hero {
+    overflow: clip;
+  }
+
+  .hero-sky img,
+  .dalbit-hero-bg {
+    animation: hero-bg linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100svh;
+  }
+
+  .hero-inner,
+  .dalbit-hero > :is(.dalbit-title, .dalbit-lead, .store-slot) {
+    animation: hero-out linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 70svh;
+  }
+
+  .dalbit-icon {
+    animation: hero-icon linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 70svh;
+  }
+
+  .hero-mascot {
+    animation: hero-rise linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100svh;
+  }
+
+  .dalbit-bunny {
+    animation: peek 6s ease-in-out infinite, hero-rise linear both;
+    animation-timeline: auto, scroll(root);
+    animation-range: normal, 0 100svh;
+  }
+
+  @keyframes hero-bg {
+    to {
+      translate: 0 22%;
+      scale: 1.14;
+    }
+  }
+
+  @keyframes hero-out {
+    to {
+      opacity: 0;
+      translate: 0 -16svh;
+      scale: 0.94;
+    }
+  }
+
+  @keyframes hero-icon {
+    to {
+      opacity: 0;
+      translate: 0 -26svh;
+      scale: 1.25;
+    }
+  }
+
+  @keyframes hero-rise {
+    to {
+      translate: 0 -34svh;
+      scale: 1.12;
+    }
+  }
+}
+
+@supports (animation-timeline: view()) {
+  /* Statement text fills in line by line. */
+  .statement {
+    animation: fill linear both;
+    animation-timeline: view();
+    animation-range: cover 10% cover 50%;
+  }
+
+  .fill-text {
+    color: transparent;
+    background:
+      linear-gradient(var(--ink), var(--ink)) 0 0 / var(--fill) 100% no-repeat,
+      linear-gradient(var(--faint), var(--faint));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  @keyframes fill {
+    from {
+      --fill: 0%;
+    }
+
+    to {
+      --fill: 100%;
+    }
+  }
+
+  /* Headings and cards rise into place. */
+  :where(main h2, main .section-lead, .place-list li, .game-list li, .promise-list li, .promises-art, .closing-inner > *, .dalbit-closing .wrap > *) {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+
+  :where(.place-list, .game-list, .promise-list) > li:nth-child(3n + 2) {
+    animation-range: entry 15% cover 32%;
+  }
+
+  :where(.place-list, .game-list, .promise-list) > li:nth-child(3n) {
+    animation-range: entry 25% cover 40%;
+  }
+
+  .place-list img {
+    animation: spin-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+
+  .friend-list li {
+    animation: pop-in linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 30%;
+  }
+
+  .friend-list li:nth-child(even) {
+    animation-range: entry 25% cover 40%;
+  }
+
+  .closing-bunny,
+  .closing-friends {
+    animation: pop-in linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 35%;
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      translate: 0 56px;
+      scale: 0.96;
+    }
+  }
+
+  @keyframes spin-in {
+    from {
+      rotate: -24deg;
+      scale: 0.6;
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      translate: 0 40px;
+      scale: 0.5;
+    }
+
+    70% {
+      opacity: 1;
+      scale: 1.08;
+    }
+
+    to {
+      scale: 1;
+    }
+  }
+}
+
+/* Games: the section pins and the cards glide sideways as the page scrolls. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .games {
+      --card: min(270px, 64vw, (100svh - 360px) * 2 / 3);
+      --gap: 20px;
+      --wrap: min(1120px, 100vw - 2 * var(--gutter));
+      height: calc(100svh + var(--n) * (var(--card) + var(--gap)) - var(--gap) - var(--wrap));
+      padding: 0;
+      overflow-x: clip;
+      view-timeline: --games block;
+    }
+
+    .games-pin {
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100svh;
+      padding-top: calc(56px + env(safe-area-inset-top));
+    }
+
+    .games .game-list {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: var(--gap);
+      width: max-content;
+      margin-top: 28px;
+      animation: games-slide linear both;
+      animation-timeline: --games;
+      animation-range: contain 0% contain 100%;
+    }
+
+    .games .game-list li {
+      flex: 0 0 var(--card);
+      width: var(--card);
+    }
+
+    .games-progress {
+      display: block;
+      width: min(240px, 50%);
+      height: 4px;
+      margin: 26px auto 0;
+      border-radius: 999px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .games-progress span {
+      display: block;
+      height: 100%;
+      background: var(--peach);
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: --games;
+      animation-range: contain 0% contain 100%;
+    }
+
+    @keyframes games-slide {
+      to {
+        translate: calc(var(--wrap) - 100%) 0;
+      }
+    }
+
+    @keyframes grow-x {
+      from {
+        scale: 0 1;
+      }
+    }
+  }
+}

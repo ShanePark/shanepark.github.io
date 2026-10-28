@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import T from '../components/T.astro';
-import LangToggle from '../components/LangToggle.astro';
+import TopbarActions from '../components/TopbarActions.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { apps } from '../data/apps';
 import '../styles/home.css';
@@ -14,14 +14,14 @@ import '../styles/home.css';
 >
   <header class="topbar">
     <span class="topbar-brand home-topbar-title">Shane Park</span>
-    <LangToggle />
+    <TopbarActions />
   </header>
 
   <main>
     <section class="home-hero" aria-labelledby="home-title">
       <div class="wrap">
         <h1 id="home-title"><T en="Little games for little ones" ko="아이를 위한 작은 게임들" /></h1>
-        <p class="section-lead"><T en="Gentle iPhone and iPad games for young children. No ads, no purchases, no data collected." ko="어린아이를 위한 다정한 iPhone, iPad 게임이에요. 광고도, 결제도, 정보 수집도 없어요." /></p>
+        <p class="section-lead"><T en="No ads, no purchases, no data collected." ko="광고도, 결제도, 정보 수집도 없어요." /></p>
       </div>
     </section>
 
@@ -30,7 +30,9 @@ import '../styles/home.css';
         {apps.map(app => (
           <li>
             <a class="app-card" href={app.path}>
-              <Image class="app-cover" src={app.cover} alt="" widths={[560, 1120]} sizes="(min-width: 760px) 545px, 100vw" />
+              {(['light', 'dark'] as const).map(theme => (
+                <Image class="app-cover" data-t={theme} src={app.cover[theme]} alt="" widths={[560, 1120]} sizes="(min-width: 760px) 545px, 100vw" loading="lazy" />
+              ))}
               <div class="app-body">
                 <Image class="app-icon" src={app.icon} alt="" widths={[96, 192]} sizes="96px" />
                 <h2><T {...app.name} /></h2>

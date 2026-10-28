@@ -11,9 +11,44 @@
   --leaf-soft: #eaf5dc;
   --butter: #fff3cf;
   --line: #f0e2d2;
+  --leaf-ink: #3f6e27;
   --shadow: 0 10px 30px rgba(74, 47, 34, 0.12);
+  --soft-shadow: 0 3px 12px rgba(74, 47, 34, 0.12);
+  /* Frosted pills that sit over artwork: toggles, the hero lead, device chips. */
+  --chip: rgba(255, 255, 255, 0.8);
+  --on-accent: #fff;
   --gutter: max(16px, env(safe-area-inset-left));
   color-scheme: light;
+}
+
+/* Night garden, chosen with the theme toggle or the system setting. */
+:root[data-theme="dark"] {
+  --sky: #1a2541;
+  --cream: #111829;
+  --paper: #1c253c;
+  --ink: #fbf2e6;
+  --ink-soft: #b8bfd2;
+  --peach: #f6a27f;
+  --peach-deep: #ffb898;
+  --peach-soft: #182136;
+  --leaf: #93d66d;
+  --leaf-soft: #1b2b2a;
+  --butter: #3a3322;
+  --line: #2a3654;
+  --leaf-ink: #c2eaa8;
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.38);
+  --soft-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  --chip: rgba(17, 24, 41, 0.72);
+  --on-accent: #2b130a;
+  color-scheme: dark;
+}
+
+/* Derived on body so an app theme class there feeds them its own palette. */
+body {
+  --button-bg: var(--ink);
+  --button-ink: var(--cream);
+  --glass: color-mix(in srgb, var(--cream) 76%, transparent);
+  --faint: color-mix(in srgb, var(--ink) 22%, transparent);
 }
 
 * {
@@ -52,13 +87,25 @@ a:focus-visible {
 }
 
 html[data-lang="en"] [data-l="ko"],
-html[data-lang="ko"] [data-l="en"] {
+html[data-lang="ko"] [data-l="en"],
+html[data-theme="dark"] [data-t="light"],
+html:not([data-theme="dark"]) [data-t="dark"] {
   display: none;
 }
 
 .wrap {
   width: min(1120px, 100% - 2 * var(--gutter));
   margin-inline: auto;
+}
+
+h1,
+h2,
+h3,
+.section-lead,
+.hero-lead,
+.dalbit-lead,
+.statement {
+  text-wrap: balance;
 }
 
 h2 {
@@ -84,12 +131,10 @@ h3 {
   font-size: clamp(1rem, 0.95rem + 0.3vw, 1.12rem);
 }
 
-.inline-glyph {
-  display: inline-block;
-  width: 34px;
-  height: 34px;
-  margin-left: 4px;
-  vertical-align: middle;
+.eyebrow {
+  color: var(--peach-deep);
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  letter-spacing: 0.02em;
 }
 
 /* Top bar floats over the hero sky. */
@@ -120,7 +165,7 @@ h3 {
   width: 40px;
   height: 40px;
   border-radius: 11px;
-  box-shadow: 0 3px 10px rgba(74, 47, 34, 0.2);
+  box-shadow: var(--soft-shadow);
 }
 
 @media (max-width: 420px) {
@@ -134,8 +179,8 @@ h3 {
   gap: 2px;
   padding: 4px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 3px 12px rgba(74, 47, 34, 0.12);
+  background: var(--chip);
+  box-shadow: var(--soft-shadow);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -155,7 +200,63 @@ h3 {
 
 .lang-toggle a[aria-current="true"] {
   background: var(--peach);
-  color: #fff;
+  color: var(--on-accent);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--chip);
+  color: var(--ink);
+  box-shadow: var(--soft-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--peach-deep);
+  outline-offset: 3px;
+}
+
+.theme-toggle svg {
+  grid-area: 1 / 1;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.3s ease, rotate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), scale 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* The icon shows the mode a tap switches to. */
+:root:not([data-theme="dark"]) .theme-toggle .icon-sun,
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 0;
+  rotate: -90deg;
+  scale: 0.5;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 

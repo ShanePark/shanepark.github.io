@@ -1,13 +1,11 @@
 ---
 import Doc from '../../layouts/Doc.astro';
-import { luluDocApp, luluDocPages } from '../../data/luluDocs';
 import body from '../../content/lulu/support.html?raw';
 ---
 <Doc
-  app={luluDocApp}
+  appId="lulu"
   page="support.html"
-  title="Lulu’s Little Adventures – Support"
+  title={{ en: 'Support', ko: '고객 지원' }}
   description="Support for Lulu’s Little Adventures (루루 어드벤처), a gentle exploring game for young children."
-  pages={luluDocPages}
   body={body}
 />

@@ -9,10 +9,12 @@ interface Props {
   touchIcon?: string;
   ogImage?: string;
   themeColor?: string;
+  /** Browser chrome color while the dark theme is showing. */
+  themeColorDark?: string;
   /** Theme class for app-specific color tokens, such as theme-dalbit. */
   theme?: string;
 }
-const { title, titleKo = title, description, icon = '/favicon.svg', touchIcon, ogImage, themeColor = '#fff8ee', theme } = Astro.props;
+const { title, titleKo = title, description, icon = '/favicon.svg', touchIcon, ogImage, themeColor = '#fff8ee', themeColorDark = '#111829', theme } = Astro.props;
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 ---
 <!doctype html>
@@ -20,8 +22,8 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content={themeColor}>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content={themeColor} data-light={themeColor} data-dark={themeColorDark}>
 <meta name="referrer" content="no-referrer">
 <title>{title}</title>
 <meta name="description" content={description}>
@@ -48,6 +50,31 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
     document.documentElement.lang = language;
     document.documentElement.dataset.lang = language;
     if (language === 'ko') document.title = titleKo;
+  })();
+
+  // One light or dark flag for the whole site: a remembered choice, else the system setting.
+  (() => {
+    const system = matchMedia('(prefers-color-scheme: dark)');
+    window.applySiteTheme = theme => {
+      document.documentElement.dataset.theme = theme;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.content = meta.dataset[theme];
+      window.dispatchEvent(new Event('site-theme-change'));
+    };
+    const saved = () => {
+      try {
+        const value = localStorage.getItem('site-theme');
+        return value === 'light' || value === 'dark' ? value : null;
+      } catch { return null; }
+    };
+    window.applySiteTheme(saved() ?? (system.matches ? 'dark' : 'light'));
+    system.addEventListener('change', event => {
+      if (!saved()) window.applySiteTheme(event.matches ? 'dark' : 'light');
+    });
+    // Another tab changed the flag.
+    window.addEventListener('storage', event => {
+      if (event.key === 'site-theme') window.applySiteTheme(saved() ?? (system.matches ? 'dark' : 'light'));
+    });
   })();
 </script>
 <slot name="head" />

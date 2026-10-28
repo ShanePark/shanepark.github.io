@@ -1,6 +1,32 @@
-/* dalbitLand: moonlit tokens from the app's DalbitPalette. */
+/* dalbitLand: tokens from the app's DalbitPalette, a pastel dawn in light mode and the
+   moonlit park at night. */
 
 .theme-dalbit {
+  --sky: #efe5fb;
+  --cream: #faf6ff;
+  --paper: #ffffff;
+  --ink: #2a1f5c;
+  --ink-soft: #685d93;
+  --peach: #ec5f93;
+  --peach-deep: #c93f74;
+  --peach-soft: #f3ecfd;
+  --leaf: #13a58c;
+  --leaf-soft: #efe8fc;
+  --butter: #fff0c4;
+  --line: #e4d9f6;
+  --moon: #f0b43c;
+  --shadow: 0 12px 34px rgba(58, 38, 128, 0.12);
+  --soft-shadow: 0 3px 12px rgba(58, 38, 128, 0.12);
+  --chip: rgba(255, 255, 255, 0.78);
+  --on-accent: #fff;
+  --title: #33237a;
+  --title-glow: 0 2px 18px rgba(255, 255, 255, 0.9), 0 0 2px rgba(255, 255, 255, 0.8);
+  --lead-glow: 0 1px 12px rgba(255, 255, 255, 0.95);
+  --hero-veil: radial-gradient(ellipse at 50% 46%, rgba(255, 250, 255, 0.5), rgba(255, 250, 255, 0) 62%);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] .theme-dalbit {
   --sky: #090b24;
   --cream: #14123d;
   --paper: #231c58;
@@ -15,33 +41,20 @@
   --line: #3b2f78;
   --moon: #ffe099;
   --shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
-}
-
-.theme-dalbit .lang-toggle {
-  background: rgba(20, 18, 61, 0.72);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
-}
-
-.theme-dalbit .lang-toggle a[aria-current="true"] {
-  color: #2a0f1d;
-}
-
-.theme-dalbit .topbar-brand img {
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
-}
-
-.theme-dalbit .store-button {
-  background: var(--moon);
-  color: #1b1446;
-  box-shadow: 0 8px 26px rgba(255, 224, 153, 0.28);
+  --soft-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  --chip: rgba(20, 18, 61, 0.72);
+  --on-accent: #2a0f1d;
+  --button-bg: var(--moon);
+  --button-ink: #1b1446;
+  --title: var(--moon);
+  --title-glow: 0 4px 24px rgba(0, 0, 0, 0.55), 0 0 36px rgba(255, 224, 153, 0.35);
+  --lead-glow: 0 2px 12px rgba(0, 0, 0, 0.7);
+  --hero-veil: radial-gradient(ellipse at 50% 45%, rgba(9, 11, 36, 0.62), rgba(9, 11, 36, 0.15) 70%);
+  color-scheme: dark;
 }
 
 .theme-dalbit .soon-spark {
   color: var(--peach);
-}
-
-.theme-dalbit .devices {
-  background: rgba(20, 18, 61, 0.7);
 }
 
 .theme-dalbit .phone {
@@ -86,8 +99,8 @@
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(ellipse at 50% 45%, rgba(9, 11, 36, 0.62), rgba(9, 11, 36, 0.15) 70%),
-    linear-gradient(to bottom, rgba(20, 18, 61, 0) 60%, var(--cream));
+    var(--hero-veil),
+    linear-gradient(to bottom, transparent 60%, var(--cream));
 }
 
 .dalbit-icon {
@@ -98,12 +111,12 @@
 
 .dalbit-title {
   margin: 22px 0 0;
-  color: var(--moon);
+  color: var(--title);
   font-size: clamp(2.6rem, 1.8rem + 4vw, 4.4rem);
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.55), 0 0 36px rgba(255, 224, 153, 0.35);
+  text-shadow: var(--title-glow);
 }
 
 .dalbit-lead {
@@ -112,7 +125,7 @@
   font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.3rem);
   font-weight: 700;
   line-height: 1.45;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+  text-shadow: var(--lead-glow);
 }
 
 .dalbit-bunny {
@@ -184,20 +197,20 @@
   font-size: 1.08rem;
 }
 
-.game-list p {
-  margin: 4px 0 0;
-  color: var(--ink-soft);
-  font-size: 0.93rem;
-  line-height: 1.5;
+.game-list .skill {
+  display: inline-block;
+  margin: 8px 0 0;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--leaf-soft);
+  color: var(--leaf);
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
 .dalbit-screens {
   padding: 64px 0 24px;
   background: linear-gradient(var(--cream), var(--sky) 55%, var(--cream));
-}
-
-.dalbit-screens .screens p {
-  color: var(--ink);
 }
 
 .closing-bunny {

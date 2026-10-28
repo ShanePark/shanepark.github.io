@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import T from './T.astro';
 import type { Text } from '../data/apps';
 
@@ -12,26 +14,35 @@ const icons = {
   moon: '<path d="M33 30a12 12 0 0 1-15-15 12 12 0 1 0 15 15z"/><path d="M34 10v6M31 13h6"/>',
   tablet: '<rect x="11" y="6" width="26" height="36" rx="5"/><path d="M21 36h6"/>',
   globe: '<circle cx="24" cy="24" r="15"/><path d="M9 24h30M24 9c-5 5-5 25 0 30M24 9c5 5 5 25 0 30"/>',
+  shapes: '<path d="M15 7l9 15H6z"/><circle cx="34" cy="15" r="8"/><rect x="8" y="28" width="14" height="13" rx="3"/><rect x="27" y="28" width="14" height="13" rx="6.5"/>',
+  cards: '<rect x="6" y="11" width="17" height="25" rx="4"/><rect x="25" y="11" width="17" height="25" rx="4"/><path d="M14.5 20v7M11 23.5h7"/><circle cx="33.5" cy="23.5" r="3.5"/>',
+  palette: '<path d="M24 8C14 8 7 15 7 24s7 16 15 16c3 0 3-3 2-5s0-4 3-4h5c5 0 9-4 9-9 0-8-8-14-17-14z"/><circle cx="16" cy="22" r="2.5"/><circle cx="22" cy="15" r="2.5"/><circle cx="31" cy="17" r="2.5"/>',
+  steps: '<circle cx="10" cy="24" r="4"/><circle cx="24" cy="24" r="4"/><circle cx="38" cy="24" r="4"/><path d="M14 24h6M28 24h6"/>',
+  speech: '<path d="M10 12h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H22l-8 7v-7h-4a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/><path d="M16 21h16M16 27h10"/>',
 };
 export type PromiseIcon = keyof typeof icons;
 
 interface Props {
   title: Text;
-  items: { icon: PromiseIcon; title: Text; text: Text }[];
+  /** Illustration shown beside the tiles. */
+  art: ImageMetadata;
+  items: { icon: PromiseIcon; title: Text }[];
 }
-const { title, items } = Astro.props;
+const { title, art, items } = Astro.props;
 ---
 <section class="promises" aria-labelledby="promises-title">
-  <div class="wrap">
-    <h2 id="promises-title"><T {...title} /></h2>
-    <ul class="promise-list">
-      {items.map(item => (
-        <li>
-          <svg viewBox="0 0 48 48" aria-hidden="true" set:html={icons[item.icon]} />
-          <h3><T {...item.title} /></h3>
-          <p><T {...item.text} /></p>
-        </li>
-      ))}
-    </ul>
+  <div class="wrap promises-inner">
+    <Image class="promises-art" src={art} alt="" widths={[480, 960]} sizes="(min-width: 900px) 460px, min(520px, 100vw - 32px)" loading="lazy" />
+    <div class="promises-body">
+      <h2 id="promises-title"><T {...title} /></h2>
+      <ul class="promise-list">
+        {items.map(item => (
+          <li>
+            <svg viewBox="0 0 48 48" aria-hidden="true" set:html={icons[item.icon]} />
+            <h3><T {...item.title} /></h3>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>

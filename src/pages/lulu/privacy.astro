@@ -1,13 +1,11 @@
 ---
 import Doc from '../../layouts/Doc.astro';
-import { luluDocApp, luluDocPages } from '../../data/luluDocs';
 import body from '../../content/lulu/privacy.html?raw';
 ---
 <Doc
-  app={luluDocApp}
+  appId="lulu"
   page="privacy.html"
-  title="Lulu’s Little Adventures – Privacy Policy"
+  title={{ en: 'Privacy Policy', ko: '개인정보 처리방침' }}
   description="Privacy policy for Lulu’s Little Adventures (루루 어드벤처). The app collects no data."
-  pages={luluDocPages}
   body={body}
 />

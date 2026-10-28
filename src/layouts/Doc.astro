@@ -1,52 +1,74 @@
 ---
+import { Image } from 'astro:assets';
+import Base from './Base.astro';
+import T from '../components/T.astro';
+import TopbarActions from '../components/TopbarActions.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { appById, type Text } from '../data/apps';
+import { docSites } from '../data/docs';
+import '../styles/landing.css';
+import '../styles/dalbit.css';
 import '../styles/doc.css';
 
-// Bilingual policy pages: the English and Korean sections both stay on the page.
+// Support and policy pages share the landing page's theme and remembered language.
+// Each body holds one section per language marked data-l, so only the active one shows.
 interface Props {
-  app: { name: string; home: string; icon: string; touchIcon: string };
+  appId: string;
   page: string;
-  title: string;
+  title: Text;
   description: string;
-  pages: { file: string; en: string; ko: string }[];
   body: string;
 }
-const { app, page, title, description, pages, body } = Astro.props;
+const { appId, page, title, description, body } = Astro.props;
+const app = appById(appId);
+const site = docSites[appId];
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="referrer" content="no-referrer">
-<title>{title}</title>
-<meta name="description" content={description}>
-<link rel="icon" type="image/png" href={app.icon}>
-<link rel="apple-touch-icon" href={app.touchIcon}>
-</head>
-<body>
-<div class="page">
-<nav class="site-nav" aria-label="Site">
-  <a class="brand" href={app.home}>{app.name}</a>
-  {pages.map(p => <a href={p.file} aria-current={p.file === page ? 'page' : undefined}>{p.en}</a>)}
-</nav>
-<p class="lang-switch"><a href="#en" hreflang="en">English</a><a href="#ko" hreflang="ko" lang="ko">한국어</a></p>
+<Base
+  title={`${title.en} · ${app.name.en}`}
+  titleKo={`${title.ko} · ${app.name.ko}`}
+  description={description}
+  icon={site.icon}
+  touchIcon={site.touchIcon}
+  themeColor={site.themeColor}
+  themeColorDark={site.themeColorDark}
+  theme={site.theme}
+>
+  <header class="doc-hero">
+    <div class="topbar">
+      <a class="topbar-brand" href={app.path}>
+        <Image src={app.icon} alt="" width={40} height={40} />
+        <span class="brand-name"><T {...app.name} /></span>
+      </a>
+      <TopbarActions />
+    </div>
+    <a class="doc-app" href={app.path}>
+      <Image class="doc-icon" src={app.icon} alt="" widths={[84, 168]} sizes="84px" loading="eager" />
+      <span class="doc-app-name"><T {...app.name} /></span>
+    </a>
+    <nav class="doc-tabs" aria-label="Pages · 페이지">
+      {site.pages.map(p => (
+        <a href={p.file} aria-current={p.file === page ? 'page' : undefined}><T en={p.en} ko={p.ko} /></a>
+      ))}
+    </nav>
+  </header>
 
-<Fragment set:html={body} />
+  <main class="doc-main">
+    <div class="doc-card">
+      <Fragment set:html={body} />
+    </div>
+    <p class="doc-back"><a class="pill-link" href={app.path}><T en={`← Back to ${app.name.en}`} ko={`← ${app.name.ko} 소개로 돌아가기`} /></a></p>
+  </main>
 
-<footer class="doc-footer">
-  {pages.filter(p => p.file !== page).map((p, i) => <>{i > 0 && ' · '}<a href={p.file}>{p.en} · <span lang="ko">{p.ko}</span></a></>)}
-</footer>
-</div>
-<script is:inline>
-  // Build the address on click so it never appears in the page source.
-  document.querySelectorAll('[data-contact]').forEach(button => {
-    button.addEventListener('click', () => {
-      const address = String.fromCharCode(115, 104, 97, 110, 101, 112, 97, 114, 107, 46, 100, 101, 118, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109);
-      window.location.href = 'mail' + 'to:' + address;
+  <SiteFooter links={site.pages.map(p => ({ href: `${app.path}${p.file}`, en: p.en, ko: p.ko }))} />
+
+  <script is:inline>
+    // Build the address on click so it never appears in the page source.
+    document.querySelectorAll('[data-contact]').forEach(button => {
+      button.addEventListener('click', () => {
+        const address = String.fromCharCode(115, 104, 97, 110, 101, 112, 97, 114, 107, 46, 100, 101, 118, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109);
+        window.location.href = 'mail' + 'to:' + address;
+      });
+      button.disabled = false;
     });
-    button.disabled = false;
-  });
-</script>
-</body>
-</html>
+  </script>
+</Base>
