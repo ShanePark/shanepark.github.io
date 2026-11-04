@@ -46,7 +46,7 @@ export const apps: App[] = [
     icon: dalbitIcon,
     cover: { light: dalbitCover, dark: dalbitCoverDark },
     devices: 'iPhone · iPad',
-    appStoreUrl: null,
+    appStoreUrl: 'https://apps.apple.com/app/dalbitland-toddler-games/id6823673723',
   },
 ];
 

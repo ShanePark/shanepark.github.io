@@ -142,13 +142,10 @@ const support = [
 
     <Promises title={{ en: 'Joyful for kids, easy for grown-ups', ko: '아이는 즐겁게, 보호자는 마음 편히' }} art={promiseArt} items={[...promises]} />
 
-    <section class="closing dalbit-closing" aria-labelledby="closing-title">
+    <section class="closing dalbit-closing" aria-label="App Store">
       <div class="wrap">
         <Image class="closing-bunny" src={bunny} alt="" width={160} loading="lazy" />
-        <h2 id="closing-title"><T en="Coming soon for iPhone and iPad" ko="iPhone과 iPad에서 곧 만나요" /></h2>
-        <p class="link-row">
-          {support.map(link => <a class="pill-link" href={link.href}><T en={link.en} ko={link.ko} /></a>)}
-        </p>
+        <StoreButton url={app.appStoreUrl} devices={app.devices} />
       </div>
     </section>
   </main>

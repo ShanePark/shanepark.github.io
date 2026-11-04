@@ -85,6 +85,16 @@
   text-decoration: none;
 }
 
+.store-badge {
+  display: inline-block;
+  border-radius: 9px;
+}
+
+.store-badge img {
+  width: auto;
+  height: 54px;
+}
+
 .soon-spark {
   color: #ffd27a;
 }

@@ -5,8 +5,9 @@ const { url, devices } = Astro.props;
 ---
 <div class="store-slot">
   {url ? (
-    <a class="store-button" href={url}>
-      <T en="Download on the App Store" ko="App Store에서 다운로드" />
+    <a class="store-badge" href={url}>
+      <img data-l="en" src="/badges/app-store-en.svg" alt="Download on the App Store" width="120" height="40" />
+      <img data-l="ko" lang="ko" src="/badges/app-store-ko.svg" alt="App Store에서 다운로드" width="129.70071" height="40" />
     </a>
   ) : (
     <p class="store-button is-soon">
@@ -14,5 +15,5 @@ const { url, devices } = Astro.props;
       <T en="Coming soon to the App Store" ko="곧 App Store에서 만나요" />
     </p>
   )}
-  <p class="devices">{devices}</p>
+  {!url && <p class="devices">{devices}</p>}
 </div>
